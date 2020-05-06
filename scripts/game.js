@@ -17,3 +17,17 @@ var config = {
     },
     render: { pixelArt: true }
 };
+
+var game = new Phaser.Game(config);
+
+function preload() {
+    this.load.image('background', 'assets/images/background.png');
+}
+
+function create() {
+    this.add.image(400, 300, 'background');
+}
+
+function update() {
+
+}
