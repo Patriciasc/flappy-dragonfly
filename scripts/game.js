@@ -20,6 +20,7 @@ var config = {
 
 var game = new Phaser.Game(config);
 var dragonF;
+var cursor;
 
 function preload() {
     this.load.image('background', 'assets/images/background.png');
@@ -34,11 +35,16 @@ function create() {
     //dragonF = this.physics.add.sprite(100, 450, 'dragonF');
     dragonF = this.physics.add.sprite(50, 100, 'dragonF');
     dragonF.setScale(0.1);
-    dragonF.setBounce(0.2);
+    dragonF.setBounce(0.4);
     dragonF.setCollideWorldBounds(true);
     dragonF.body.setGravityY(100);
+
+    // Keys control
+    cursor = this.input.keyboard.createCursorKeys();
 }
 
 function update() {
-
+    if (cursor.up.isDown) {
+        dragonF.setVelocityY(-250);
+    }
 }
