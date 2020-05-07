@@ -23,6 +23,7 @@ var dragonF;
 var trees;
 var bird;
 var cursor;
+var t1, t2, t3;
 
 function preload() {
     this.load.image('background', 'assets/images/background.png');
@@ -40,22 +41,27 @@ function create() {
     dragonF.setScale(0.05);
     dragonF.setBounce(0.4);
     dragonF.setCollideWorldBounds(true);
+    dragonF.body.onWorldBounds = true;
     dragonF.body.setGravityY(100);
 
     // Keys control
     cursor = this.input.keyboard.createCursorKeys();
 
     // trees
-    trees = this.physics.add.group({
-        scaleX: 2,
-        scaleY: 2
-    });
+    trees = this.physics.add.group();
     // Include this in loop & random generation
-    trees.create(400, 350, 'tree').body.allowGravity = false;
-    trees.create(550, 350, 'tree').body.allowGravity = false;
-    trees.create(650, 350, 'tree').body.allowGravity = false;
+    t1 = trees.create(400, 350, 'tree');
+    t1.body.allowGravity = false;
+    t1.body.immovable = true;
+    t2 = trees.create(550, 350, 'tree');
+    t2.body.allowGravity = false;
+    t2.body.immovable = true;
+    t3 = trees.create(650, 350, 'tree');
+    t3.body.allowGravity = false;
+    t3.body.immovable = true;
     trees.scaleXY(0.5, 1);
     trees.setVelocityX(-200);
+    trees.checkWorldBounds = true;
     trees.outOfBoundsKill = true;
 
     // Collision control
