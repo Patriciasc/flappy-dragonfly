@@ -72,6 +72,7 @@ function create() {
 function hitObstacle(actor, obstacle) {
     this.physics.pause()
     dragonF.setTint(0xff0000);
+    this.cameras.main.shake(500);
 }
 
 function update() {
