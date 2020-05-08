@@ -29,7 +29,7 @@ function preload() {
     this.load.image('background', 'assets/images/background.png');
     this.load.image('dragonF', 'assets/images/bee.png');
     //this.load.spritesheet('dragonF', 'assets/images/dragonF.png', { frameWidth: 32, frameHeight: 48 });
-    this.load.image('tree', 'assets/images/tree1.png');
+    this.load.image('tree', 'assets/images/tree2_psc.png');
 }
 
 function create() {
@@ -43,6 +43,7 @@ function create() {
     dragonF.setCollideWorldBounds(true);
     dragonF.body.onWorldBounds = true;
     dragonF.body.setGravityY(100);
+    dragonF.body.immovable = true;
 
     // Keys control
     cursor = this.input.keyboard.createCursorKeys();
@@ -53,19 +54,24 @@ function create() {
     t1 = trees.create(400, 350, 'tree');
     t1.body.allowGravity = false;
     t1.body.immovable = true;
-    t2 = trees.create(550, 350, 'tree');
+    t2 = trees.create(800, 350, 'tree');
     t2.body.allowGravity = false;
     t2.body.immovable = true;
+    /*
     t3 = trees.create(650, 350, 'tree');
     t3.body.allowGravity = false;
-    t3.body.immovable = true;
-    trees.scaleXY(0.5, 1);
+    t3.body.immovable = true;*/
     trees.setVelocityX(-200);
     trees.checkWorldBounds = true;
     trees.outOfBoundsKill = true;
 
     // Collision control
-    this.physics.add.collider(dragonF, trees);
+    this.physics.add.collider(dragonF, trees, hitObstacle, null, this);
+}
+
+function hitObstacle(actor, obstacle) {
+    this.physics.pause()
+    dragonF.setTint(0xff0000);
 }
 
 function update() {
