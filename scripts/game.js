@@ -24,6 +24,7 @@ var trees;
 var bird;
 var cursor;
 var t1, t2, t3;
+var moreTrees = 0;
 
 function preload() {
     this.load.image('background', 'assets/images/background.png');
@@ -57,10 +58,6 @@ function create() {
     t2 = trees.create(800, 350, 'tree');
     t2.body.allowGravity = false;
     t2.body.immovable = true;
-    /*
-    t3 = trees.create(650, 350, 'tree');
-    t3.body.allowGravity = false;
-    t3.body.immovable = true;*/
     trees.setVelocityX(-200);
     trees.checkWorldBounds = true;
     trees.outOfBoundsKill = true;
@@ -70,12 +67,32 @@ function create() {
 }
 
 function hitObstacle(actor, obstacle) {
-    this.physics.pause()
+    this.physics.pause();
     dragonF.setTint(0xff0000);
     this.cameras.main.shake(500);
 }
 
 function update() {
+    // trees
+    moreTrees++
+    console.log(moreTrees);
+    if (moreTrees === 250) {
+        console.log("next trees");
+        // trees
+        //trees = this.physics.add.group();
+        // Include this in loop & random generation
+        t1 = trees.create(400, 350, 'tree');
+        t1.body.allowGravity = false;
+        t1.body.immovable = true;
+        t2 = trees.create(800, 350, 'tree');
+        t2.body.allowGravity = false;
+        t2.body.immovable = true;
+        trees.setVelocityX(-200);
+        trees.checkWorldBounds = true;
+        trees.outOfBoundsKill = true;
+        moreTrees = 0
+    }
+
     if (cursor.up.isDown) {
         dragonF.setVelocityY(-250);
     }
