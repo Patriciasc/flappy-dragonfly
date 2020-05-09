@@ -23,13 +23,12 @@ var dragonF;
 var trees;
 var bird;
 var cursor;
-//var tree1, tree;
 var moreTrees = 0;
 
 function preload() {
     this.load.image('background', 'assets/images/background.png');
-    this.load.image('dragonF', 'assets/images/bee.png');
-    //this.load.spritesheet('dragonF', 'assets/images/dragonF.png', { frameWidth: 32, frameHeight: 48 });
+    this.load.spritesheet('dragonF_fly', 'assets/images/dragonF_flying.png', { frameWidth: 243, frameHeight: 195 });
+    this.load.spritesheet('dragonF_explode', 'assets/images/dragonF_explode.png', { frameWidth: 243, frameHeight: 195 });
     this.load.image('tree', 'assets/images/tree2_psc.png');
 }
 
@@ -37,14 +36,26 @@ function create() {
     this.add.image(400, 250, 'background');
 
     // dragonFly
-    //dragonF = this.physics.add.sprite(100, 450, 'dragonF');
-    dragonF = this.physics.add.sprite(50, 100, 'dragonF');
-    dragonF.setScale(0.05);
+    dragonF = this.physics.add.sprite(100, 100, 'dragonF_fly');
+    dragonF.setScale(0.4);
     dragonF.setBounce(0.4);
     dragonF.setCollideWorldBounds(true);
     dragonF.body.onWorldBounds = true;
     dragonF.body.setGravityY(100);
     dragonF.body.immovable = true;
+    this.anims.create({
+        key: 'dragonF_fly',
+        frames: this.anims.generateFrameNumbers('dragonF_fly'),
+        frameRate: 20,
+        repeat: -1
+    });
+    this.anims.create({
+        key: 'dragonF_explode',
+        frames: this.anims.generateFrameNumbers('dragonF_explode'),
+        frameRate: 15,
+        repeat: -1
+    });
+    dragonF.play('dragonF_fly');
 
     // Keys control
     cursor = this.input.keyboard.createCursorKeys();
@@ -67,8 +78,10 @@ function addTree(x, y) {
 }
 
 function hitObstacle(actor, obstacle) {
-    dragonF.setTint(0xff0000);
+    dragonF.play('dragonF_explode');
+    //dragonF.setTint(0xff0000);
     this.cameras.main.shake(500);
+    dragonF.anims.stop();
     this.physics.pause();
     trees.clear();
 }
