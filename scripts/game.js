@@ -23,7 +23,7 @@ var dragonF;
 var trees;
 var bird;
 var cursor;
-var t1, t2, t3;
+//var tree1, tree;
 var moreTrees = 0;
 
 function preload() {
@@ -51,46 +51,36 @@ function create() {
 
     // trees
     trees = this.physics.add.group();
-    // Include this in loop & random generation
-    t1 = trees.create(400, 350, 'tree');
-    t1.body.allowGravity = false;
-    t1.body.immovable = true;
-    t2 = trees.create(800, 350, 'tree');
-    t2.body.allowGravity = false;
-    t2.body.immovable = true;
-    trees.setVelocityX(-200);
-    trees.checkWorldBounds = true;
-    trees.outOfBoundsKill = true;
+    addTree(620,350);
 
     // Collision control
     this.physics.add.collider(dragonF, trees, hitObstacle, null, this);
 }
 
+function addTree(x, y) {
+    var tree = trees.create(x, y, 'tree');
+    tree.body.allowGravity = false;
+    tree.body.immovable = true;
+    tree.checkWorldBounds = true;
+    tree.outOfBoundsKill = true;
+    return tree;
+}
+
 function hitObstacle(actor, obstacle) {
-    this.physics.pause();
     dragonF.setTint(0xff0000);
     this.cameras.main.shake(500);
+    this.physics.pause();
+    trees.clear();
 }
 
 function update() {
     // trees
     moreTrees++
-    console.log(moreTrees);
-    if (moreTrees === 250) {
-        console.log("next trees");
-        // trees
-        //trees = this.physics.add.group();
-        // Include this in loop & random generation
-        t1 = trees.create(400, 350, 'tree');
-        t1.body.allowGravity = false;
-        t1.body.immovable = true;
-        t2 = trees.create(800, 350, 'tree');
-        t2.body.allowGravity = false;
-        t2.body.immovable = true;
+    if (moreTrees === 100) {
+        var tree = addTree(950, 350);
+        tree.setOrigin(0, 0);
         trees.setVelocityX(-200);
-        trees.checkWorldBounds = true;
-        trees.outOfBoundsKill = true;
-        moreTrees = 0
+        moreTrees = 0;
     }
 
     if (cursor.up.isDown) {
