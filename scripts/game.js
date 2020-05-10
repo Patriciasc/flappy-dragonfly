@@ -28,7 +28,7 @@ var moreTrees = 0;
 function preload() {
     this.load.image('background', 'assets/images/background.png');
     this.load.spritesheet('dragonF_fly', 'assets/images/dragonF_flying.png', { frameWidth: 243, frameHeight: 195 });
-    this.load.spritesheet('dragonF_explode', 'assets/images/dragonF_explode.png', { frameWidth: 243, frameHeight: 195 });
+    this.load.spritesheet('dragonF_explode', 'assets/images/dragonF_explode.png', { frameWidth: 378, frameHeight: 211 });
     this.load.image('tree', 'assets/images/tree2_psc.png');
 }
 
@@ -52,8 +52,8 @@ function create() {
     this.anims.create({
         key: 'dragonF_explode',
         frames: this.anims.generateFrameNumbers('dragonF_explode'),
-        frameRate: 15,
-        repeat: -1
+        frameRate: 10,
+        repeat: 0,
     });
     dragonF.play('dragonF_fly');
 
@@ -79,9 +79,8 @@ function addTree(x, y) {
 
 function hitObstacle(actor, obstacle) {
     dragonF.play('dragonF_explode');
-    //dragonF.setTint(0xff0000);
+    dragonF.setTint(0xff0000);
     this.cameras.main.shake(500);
-    dragonF.anims.stop();
     this.physics.pause();
     trees.clear();
 }
