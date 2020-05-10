@@ -1,0 +1,230 @@
+{
+	"textures": [
+		{
+			"image": "bird_flying.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 1003,
+				"h": 1015
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "Blue_Bird_Flying0001.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 426,
+						"h": 500
+					},
+					"spriteSourceSize": {
+						"x": 34,
+						"y": 2,
+						"w": 344,
+						"h": 276
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 344,
+						"h": 276
+					}
+				},
+				{
+					"filename": "Blue_Bird_Flying0010.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 426,
+						"h": 500
+					},
+					"spriteSourceSize": {
+						"x": 34,
+						"y": 2,
+						"w": 344,
+						"h": 276
+					},
+					"frame": {
+						"x": 1,
+						"y": 279,
+						"w": 344,
+						"h": 276
+					}
+				},
+				{
+					"filename": "Blue_Bird_Flying0009.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 426,
+						"h": 500
+					},
+					"spriteSourceSize": {
+						"x": 34,
+						"y": 5,
+						"w": 343,
+						"h": 275
+					},
+					"frame": {
+						"x": 347,
+						"y": 1,
+						"w": 343,
+						"h": 275
+					}
+				},
+				{
+					"filename": "Blue_Bird_Flying0008.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 426,
+						"h": 500
+					},
+					"spriteSourceSize": {
+						"x": 33,
+						"y": 32,
+						"w": 345,
+						"h": 254
+					},
+					"frame": {
+						"x": 1,
+						"y": 557,
+						"w": 345,
+						"h": 254
+					}
+				},
+				{
+					"filename": "Blue_Bird_Flying0005.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 426,
+						"h": 500
+					},
+					"spriteSourceSize": {
+						"x": 28,
+						"y": 159,
+						"w": 310,
+						"h": 275
+					},
+					"frame": {
+						"x": 692,
+						"y": 1,
+						"w": 310,
+						"h": 275
+					}
+				},
+				{
+					"filename": "Blue_Bird_Flying0003.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 426,
+						"h": 500
+					},
+					"spriteSourceSize": {
+						"x": 30,
+						"y": 147,
+						"w": 376,
+						"h": 220
+					},
+					"frame": {
+						"x": 347,
+						"y": 278,
+						"w": 376,
+						"h": 220
+					}
+				},
+				{
+					"filename": "Blue_Bird_Flying0007.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 426,
+						"h": 500
+					},
+					"spriteSourceSize": {
+						"x": 32,
+						"y": 99,
+						"w": 354,
+						"h": 197
+					},
+					"frame": {
+						"x": 1,
+						"y": 813,
+						"w": 354,
+						"h": 197
+					}
+				},
+				{
+					"filename": "Blue_Bird_Flying0004.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 426,
+						"h": 500
+					},
+					"spriteSourceSize": {
+						"x": 29,
+						"y": 156,
+						"w": 312,
+						"h": 272
+					},
+					"frame": {
+						"x": 348,
+						"y": 500,
+						"w": 312,
+						"h": 272
+					}
+				},
+				{
+					"filename": "Blue_Bird_Flying0006.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 426,
+						"h": 500
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 141,
+						"w": 308,
+						"h": 259
+					},
+					"frame": {
+						"x": 662,
+						"y": 500,
+						"w": 308,
+						"h": 259
+					}
+				},
+				{
+					"filename": "Blue_Bird_Flying0002.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 426,
+						"h": 500
+					},
+					"spriteSourceSize": {
+						"x": 32,
+						"y": 47,
+						"w": 309,
+						"h": 253
+					},
+					"frame": {
+						"x": 662,
+						"y": 761,
+						"w": 309,
+						"h": 253
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:909857bd434dcbbcadb54f900986a571:ecf638372a8010a01b9d5ee3b46a0907:f81a8102940116830ea8d1fd310ae084$"
+	}
+}
