@@ -70,6 +70,28 @@ function create() {
 
 function addTree(x, y) {
     var tree = trees.create(x, y, 'tree');
+    var treeType = Math.floor(Math.random() * 5);
+    console.log(treeType);
+    switch (treeType) {
+        case 0:
+            tree.scaleX = .4;
+            tree.y += 60;
+            break;
+        case 1:
+            tree.scaleX = .2;
+            tree.y += 100;
+            break;
+        case 2:
+            tree.scaleX = .5;
+            break;
+        case 3:
+            tree.y += 170;
+            tree.scaleX = .7;
+        case 4:
+            tree.y += 60;
+        default:
+            break;
+    }
     tree.body.allowGravity = false;
     tree.body.immovable = true;
     tree.checkWorldBounds = true;
