@@ -24,7 +24,8 @@ var dragonF;
 var trees;
 var cursor;
 var moreTrees = 0;
-var bird;
+var birds;
+var birdAnims;
 
 function preload() {
     this.load.image('background', 'assets/images/background.png');
@@ -41,10 +42,10 @@ function create() {
     this.add.image(400, 250, 'background');
 
     // bird
-    this.anims.create({
+    birdAnims =this.anims.create({
         key: 'bird_fly',
         frames: this.anims.generateFrameNames('bird', {
-            //start: 1,
+            start: 1,
             end: 10,
             zeroPad: 4,
             prefix: 'Blue_Bird_Flying',
@@ -82,7 +83,9 @@ function create() {
     // Obstacles:
     // trees
     trees = this.physics.add.group();
-    addObstacles(620,350);
+
+    //birds
+    birds = this.physics.add.group();
 
     // Collision control
     this.physics.add.collider(dragonF, trees, hitObstacle, null, this);
@@ -122,7 +125,8 @@ function addObstacles(x, y) {
 }
 
 function addBird(tree){
-    bird = self.physics.add.sprite(tree.x + 200, tree.y - 200, 'bird');
+    var bird = self.physics.add.sprite(tree.x + 200, tree.y - 200, 'bird');
+    birds.add(bird, false);
     bird.body.allowGravity = false;
     bird.setScale(0.25);
     bird.setVelocityX(-200);
@@ -131,6 +135,7 @@ function addBird(tree){
     bird.outOfBoundsKill = true;
     bird.play('bird_fly');
     self.physics.add.collider(dragonF, bird, hitObstacle, null, self);
+    console.log(birds);
 }
 
 function hitObstacle(actor, obstacle) {
@@ -139,7 +144,8 @@ function hitObstacle(actor, obstacle) {
     this.cameras.main.shake(500);
     this.physics.pause();
     trees.clear();
-    bird.anims.stop();
+    birdAnims.pause();
+    birds.clear();
     //this.scene.restart();
     //this.anims.pauseAll();
 }
