@@ -53,7 +53,6 @@ function create() {
     var y = 40;
 
     for (var i = 0; i < lifesNum; i++) {
-        console.log("in loop: "+x+','+y);
         var life = lifes.create(x, y,'heart_full');
         life.setScale(0.05);
         x += 30;
@@ -163,19 +162,19 @@ function addBird(tree){
     bird.outOfBoundsKill = true;
     bird.play('bird_fly');
     self.physics.add.collider(dragonF, bird, hitObstacle, null, self);
-    console.log(birds);
 }
 
 function hitObstacle(actor, obstacle) {
-    if (lifesNum === 0) return gameOver();
-    //TODO: CHECK remove obstacle collisions
-    obstacle.body.collider = false;
-    this.cameras.main.shake(40);
-    //TODO: Replace full heart with empty heart
-    var life = lifes.getLast();
-    lifes.remove(life, self.scene);
-    //this.add.image(200, y, 'heart_empty').setScale(0.05);
-    lifesNum--;
+    if (obstacle !== undefined) {
+        if (lifesNum === 0) return gameOver();
+        //TODO: CHECK remove obstacle collisions
+        obstacle.body.collider = false;
+        //this.cameras.main.shake(40);
+        var life = lifes.children.entries[lifes.getLength()-1];
+        life.destroy();
+        life = this.add.image(life.x, 40, 'heart_empty').setScale(0.05);
+        lifesNum--;
+    }
 }
 
 function gameOver() {
