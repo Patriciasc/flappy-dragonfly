@@ -18,14 +18,18 @@ var config = {
     render: { pixelArt: true }
 };
 
-var self;
+var self = null;
 var game = new Phaser.Game(config);
-var dragonF;
-var trees;
-var cursor;
+var dragonF = null;
+var trees = null;
+var cursor = null;
 var moreTrees = 0;
-var birds;
-var birdAnims;
+var birds = null;
+var birdAnims = null;
+var timer = null;
+var statusText = null;
+var lifesNum = 3;
+var lifes = null;
 
 function preload() {
     this.load.image('background', 'assets/images/background.png');
@@ -33,6 +37,8 @@ function preload() {
     this.load.spritesheet('dragonF_explode', 'assets/images/dragonF_explode.png', { frameWidth: 378, frameHeight: 211 });
     this.load.image('tree', 'assets/images/tree2_psc.png');
     this.load.atlas('bird', 'assets/images/bird_flying.png', 'assets/images/bird_flying.json');
+    this.load.image('heart_full', 'assets/images/heart_full.png');
+    this.load.image('heart_empty', 'assets/images/heart_empty.png');
 }
 
 function create() {
@@ -40,6 +46,18 @@ function create() {
     self = this;
 
     this.add.image(400, 250, 'background');
+
+    // lifes
+    lifes = this.add.group();
+    var x = 40; 
+    var y = 40;
+
+    for (var i = 0; i < lifesNum; i++) {
+        console.log("in loop: "+x+','+y);
+        var life = lifes.create(x, y,'heart_full');
+        life.setScale(0.05);
+        x += 30;
+    }
 
     // bird
     birdAnims =this.anims.create({
@@ -89,6 +107,16 @@ function create() {
 
     // Collision control
     this.physics.add.collider(dragonF, trees, hitObstacle, null, this);
+
+    // Timer
+    timer = this.time.delayedCall(1000, loadNextLevel(), [], this);
+}
+
+function loadNextLevel() {
+    // Load next level
+    // Maybe helpful
+    //this.scene.restart();
+    //this.anims.pauseAll();
 }
 
 function addObstacles(x, y) {
@@ -139,15 +167,31 @@ function addBird(tree){
 }
 
 function hitObstacle(actor, obstacle) {
+    if (lifesNum === 0) return gameOver();
+    //TODO: CHECK remove obstacle collisions
+    obstacle.body.collider = false;
+    this.cameras.main.shake(40);
+    //TODO: Replace full heart with empty heart
+    var life = lifes.getLast();
+    lifes.remove(life, self.scene);
+    //this.add.image(200, y, 'heart_empty').setScale(0.05);
+    lifesNum--;
+}
+
+function gameOver() {
     dragonF.play('dragonF_explode');
     dragonF.setTint(0xff0000);
-    this.cameras.main.shake(500);
-    this.physics.pause();
+
+    self.cameras.main.shake(500);
+    self.physics.pause();
     trees.clear();
+
     birdAnims.pause();
     birds.clear();
-    //this.scene.restart();
-    //this.anims.pauseAll();
+
+    statusText = self.add.text(game.config.width / 2 - 120, game.config.height / 2 - 50, 'GAME OVER', { fontSize: '50px', fill: '#fff' });
+    statusText.setDepth(1);
+    statusText.setStroke('#E52828', 20);
 }
 
 function update() {
