@@ -80,6 +80,7 @@ function create() {
     dragonF.body.onWorldBounds = true;
     dragonF.body.setGravityY(100);
     dragonF.body.immovable = true;
+    dragonF.setDepth(1);
     this.anims.create({
         key: 'dragonF_fly',
         frames: this.anims.generateFrameNumbers('dragonF_fly'),
@@ -112,6 +113,7 @@ function create() {
 }
 
 function loadNextLevel() {
+    // Show current puntuaction
     // Load next level
     // Maybe helpful
     //this.scene.restart();
@@ -166,14 +168,14 @@ function addBird(tree){
 
 function hitObstacle(actor, obstacle) {
     if (obstacle !== undefined) {
-        if (lifesNum === 0) return gameOver();
-        //TODO: CHECK remove obstacle collisions
-        obstacle.body.collider = false;
-        //this.cameras.main.shake(40);
-        var life = lifes.children.entries[lifes.getLength()-1];
+        //Remove obstacle collisions once is hit
+        obstacle.body.checkCollision.none = true;
+        this.cameras.main.shake(80);
+        var life = lifes.children.entries[lifesNum-1];
         life.destroy();
         life = this.add.image(life.x, 40, 'heart_empty').setScale(0.05);
         lifesNum--;
+        if (lifesNum === 0) return gameOver();
     }
 }
 
