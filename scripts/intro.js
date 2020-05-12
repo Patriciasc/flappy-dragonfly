@@ -1,5 +1,5 @@
 class intro extends Phaser.Scene {
     constructor() {
-        super("introScene");
+        super("introS");
     }
 }
