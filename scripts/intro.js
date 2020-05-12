@@ -5,9 +5,10 @@ class intro extends Phaser.Scene {
 
     create() {
         var text = this.add.text(20, 20, "Loading game...");
-        this.scene.start("level1S");
+        this.input.keyboard.on('keydown_ENTER', this.startGame, this);
+    }
 
-        //var keyObj = this.scene.input.keyboard.addKey('ENTER');  // Get key object
-        //keyObj.on('down', function (event) { this.scene.start("level1S");});
+    startGame() {
+        this.scene.start("level1S");
     }
 }

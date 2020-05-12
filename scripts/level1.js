@@ -98,7 +98,7 @@ class level1 extends Phaser.Scene {
     loadNextLevel() {
         // TODO: Show current puntuaction
         // Load next level
-        //this.scene.start("ratingS");
+        this.scene.start("ratingS");
         // Maybe helpful
         //self.scene.restart();
         //this.anims.pauseAll();
