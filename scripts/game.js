@@ -183,6 +183,7 @@ function hitObstacle(actor, obstacle) {
 function gameOver() {
     dragonF.play('dragonF_explode');
     dragonF.setTint(0xff0000);
+    //TODO: make it fall to the floor? :D
 
     self.cameras.main.shake(500);
     self.physics.pause();
@@ -194,6 +195,8 @@ function gameOver() {
     statusText = self.add.text(game.config.width / 2 - 120, game.config.height / 2 - 50, 'GAME OVER', { fontSize: '50px', fill: '#fff' });
     statusText.setDepth(1);
     statusText.setStroke('#E52828', 20);
+    
+    timer.remove();
 }
 
 function update() {
