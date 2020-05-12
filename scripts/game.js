@@ -109,15 +109,16 @@ function create() {
     this.physics.add.collider(dragonF, trees, hitObstacle, null, this);
 
     // Timer
-    timer = this.time.delayedCall(1000, loadNextLevel(), [], this);
+    timer = this.time.delayedCall(20000, loadNextLevel, [], this);
 }
 
 function loadNextLevel() {
     // Show current puntuaction
     // Load next level
     // Maybe helpful
-    //this.scene.restart();
+    //self.scene.restart();
     //this.anims.pauseAll();
+    console.log("time is gone");
 }
 
 function addObstacles(x, y) {
