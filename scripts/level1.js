@@ -12,6 +12,9 @@ class level1 extends Phaser.Scene {
         this.timer = null;
         this.lifesNum = 3;
         this.lifes = null;
+        this.counter = "";
+        this.initialTime = 20000;
+        this.lifeY = 30;
     }
 
 
@@ -29,13 +32,14 @@ class level1 extends Phaser.Scene {
     create() {
         this.add.image(400, 250, 'background');
 
+        this.counter = this.add.text(800, 15,"", { fontSize: '30px', fill: '#fff' });
+
         // lifes
         this.lifes = this.add.group();
         var x = 40;
-        var y = 40;
 
         for (var i = 0; i < this.lifesNum; i++) {
-            var life = this.lifes.create(x, y, 'heart_full');
+            var life = this.lifes.create(x, this.lifeY, 'heart_full');
             life.setScale(0.05);
             x += 30;
         }
@@ -92,7 +96,7 @@ class level1 extends Phaser.Scene {
         this.physics.add.collider(this.dragonF, this.birds, this.hitObstacle, null, self);
 
         // Timer
-        this.timer = this.time.delayedCall(20000, this.loadNextLevel, [], this);
+        this.timer = this.time.delayedCall(this.initialTime, this.loadNextLevel, [], this);
     }
 
     loadNextLevel() {
@@ -158,7 +162,7 @@ class level1 extends Phaser.Scene {
             this.cameras.main.shake(80);
             var life = this.lifes.children.entries[this.lifesNum - 1];
             life.destroy();
-            life = this.add.image(life.x, 40, 'heart_empty').setScale(0.05);
+            life = this.add.image(life.x, this.lifeY, 'heart_empty').setScale(0.05);
             this.lifesNum--;
             if (this.lifesNum === 0) return this.gameOver();
         }
@@ -196,6 +200,8 @@ class level1 extends Phaser.Scene {
         if (this.cursor.up.isDown) {
             this.dragonF.setVelocityY(-250);
         }
+
+        this.counter.setText((20-this.timer.getElapsedSeconds()).toString().substr(0,2).replace('.',''));
     }
 
 }
