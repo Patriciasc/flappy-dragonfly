@@ -3,8 +3,18 @@ class rating extends Phaser.Scene {
         super("ratingS");
     }
 
+    init(data) {
+        this.points = data.points;
+    }
+
+    preload() {
+        this.load.image('dragonFly_rating', 'assets/images/dragonF_rating.png');
+    }
+
     create() {
-        var text = this.add.text(20, 20, "Loading raiting...");
-        //load next level
+        this.cameras.main.backgroundColor.setTo(69, 179, 224);
+        this.add.image(150, 250, 'dragonFly_rating');
+        var text = this.add.text(270, 40, "*** Rating *** ", { fontSize: '40px', fill: '#fff' });
+        var text = this.add.text(270, 90, "You: " + this.points, { fontSize: '25px', fill: '#fff' });
     }
 }

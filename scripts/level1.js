@@ -13,8 +13,9 @@ class level1 extends Phaser.Scene {
         this.lifesNum = 3;
         this.lifes = null;
         this.counter = "";
-        this.initialTime = 20000;
+        this.initialTime = 60000;
         this.lifeY = 30;
+        this.points = 30;
     }
 
 
@@ -100,13 +101,11 @@ class level1 extends Phaser.Scene {
     }
 
     loadNextLevel() {
-        // TODO: Show current puntuaction
         // Load next level
-        this.scene.start("ratingS");
+        this.scene.start("ratingS", {points: this.points});
         // Maybe helpful
         //self.scene.restart();
         //this.anims.pauseAll();
-        console.log("time is gone");
     }
 
     addObstacles(x, y) {
@@ -164,6 +163,7 @@ class level1 extends Phaser.Scene {
             life.destroy();
             life = this.add.image(life.x, this.lifeY, 'heart_empty').setScale(0.05);
             this.lifesNum--;
+            this.points -= 10;
             if (this.lifesNum === 0) return this.gameOver();
         }
     }
@@ -201,7 +201,7 @@ class level1 extends Phaser.Scene {
             this.dragonF.setVelocityY(-250);
         }
 
-        this.counter.setText((20-this.timer.getElapsedSeconds()).toString().substr(0,2).replace('.',''));
+        this.counter.setText(((this.initialTime/1000)-this.timer.getElapsedSeconds()).toString().substr(0,2).replace('.',''));
     }
 
 }
