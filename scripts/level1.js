@@ -28,6 +28,10 @@ class level1 extends Phaser.Scene {
         this.load.atlas('bird', 'assets/images/bird_flying.png', 'assets/images/bird_flying.json');
         this.load.image('heart_full', 'assets/images/heart_full.png');
         this.load.image('heart_empty', 'assets/images/heart_empty.png');
+
+        this.load.audio('fly', 'assets/sounds/fly.mp3');
+        this.load.audio('hit', 'assets/sounds/hit.ogg');
+        this.load.audio('die', 'assets/sounds/die.ogg');
     }
 
     create() {
@@ -155,6 +159,10 @@ class level1 extends Phaser.Scene {
     }
 
     hitObstacle(actor, obstacle) {
+        this.sound.add('hit').play({
+            volume: .1,
+            loop: false
+        });
         if (obstacle !== undefined) {
             //Remove obstacle collisions once is hit
             obstacle.body.checkCollision.none = true;
@@ -169,6 +177,11 @@ class level1 extends Phaser.Scene {
     }
 
     gameOver() {
+        this.sound.add('die').play({
+            volume: .1,
+            loop: false
+        });
+
         this.dragonF.play('dragonF_explode');
         this.dragonF.setTint(0xff0000);
         //TODO: make it fall to the floor? :D
@@ -198,6 +211,10 @@ class level1 extends Phaser.Scene {
         }
 
         if (this.cursor.up.isDown) {
+            this.sound.add('fly').play({
+                volume: .05,
+                loop: false
+            });
             this.dragonF.setVelocityY(-250);
         }
 
