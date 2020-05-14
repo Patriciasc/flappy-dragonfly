@@ -11,14 +11,15 @@ class level1 extends Phaser.Scene {
         this.birdAnims = null;
         this.timer = null;
         this.lifesNum = 3;
+        this.lifesNumBee = 3; //TODO: refactor in player object or similar
         this.lifes = null;
         this.counter = "";
         this.initialTime = 60000;
         this.lifeY = 30;
         this.points = 30;
+        this.multiPlayer = true;
+        this.bee = null;
     }
-
-
 
     preload() {
         this.load.image('background', 'assets/images/background.png');
@@ -28,6 +29,7 @@ class level1 extends Phaser.Scene {
         this.load.atlas('bird', 'assets/images/bird_flying.png', 'assets/images/bird_flying.json');
         this.load.image('heart_full', 'assets/images/heart_full.png');
         this.load.image('heart_empty', 'assets/images/heart_empty.png');
+        this.load.image('bee', 'assets/images/bee.png');
 
         this.load.audio('fly', 'assets/sounds/fly.mp3');
         this.load.audio('hit', 'assets/sounds/hit.ogg');
@@ -46,6 +48,16 @@ class level1 extends Phaser.Scene {
         for (var i = 0; i < this.lifesNum; i++) {
             var life = this.lifes.create(x, this.lifeY, 'heart_full');
             life.setScale(0.05);
+            life.tint = 0x9000bc;
+            life.setTintFill(0x9000bc);
+            x += 30;
+        }
+
+        for (var i = 0; i < this.lifesNumBee; i++) {
+            var life = this.lifes.create(x, this.lifeY, 'heart_full');
+            life.setScale(0.05);
+            life.tint = 0x9000bc;
+            life.setTintFill(0x9000bc);
             x += 30;
         }
 
@@ -86,8 +98,18 @@ class level1 extends Phaser.Scene {
         });
         this.dragonF.play('dragonF_fly');
 
+        //bee
+        this.bee = this.physics.add.sprite(100, 100, 'bee').setScale(0.05);
+        this.bee.setBounce(0.4);
+        this.bee.setCollideWorldBounds(true);
+        this.bee.body.onWorldBounds = true;
+        this.bee.body.setGravityY(100);
+        this.bee.body.immovable = true;
+        this.bee.setDepth(1);
+
         // Keys control
         this.cursor = this.input.keyboard.createCursorKeys();
+        this.input.keyboard.on('keydown_SPACE', this.flyBee, this);
 
         // Obstacles:
         // trees
@@ -100,8 +122,15 @@ class level1 extends Phaser.Scene {
         this.physics.add.collider(this.dragonF, this.trees, this.hitObstacle, null, this);
         this.physics.add.collider(this.dragonF, this.birds, this.hitObstacle, null, self);
 
+        this.physics.add.collider(this.bee, this.trees, this.hitObstacle, null, this);
+        this.physics.add.collider(this.bee, this.birds, this.hitObstacle, null, self);
+
         // Timer
         this.timer = this.time.delayedCall(this.initialTime, this.loadNextLevel, [], this);
+    }
+
+    flyBee() {
+        this.bee.setVelocityY(-450);
     }
 
     loadNextLevel() {
@@ -155,7 +184,6 @@ class level1 extends Phaser.Scene {
         bird.checkWorldBounds = true;
         bird.outOfBoundsKill = true;
         bird.play('bird_fly');
-        //self.physics.add.collider(this.dragonF, this.bird, this.hitObstacle, null, self);
     }
 
     hitObstacle(actor, obstacle) {
@@ -170,6 +198,7 @@ class level1 extends Phaser.Scene {
             var life = this.lifes.children.entries[this.lifesNum - 1];
             life.destroy();
             life = this.add.image(life.x, this.lifeY, 'heart_empty').setScale(0.05);
+            life.setTintFill(0x9000bc);
             this.lifesNum--;
             this.points -= 10;
             if (this.lifesNum === 0) return this.gameOver();
