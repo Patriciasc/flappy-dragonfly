@@ -18,7 +18,10 @@ class level1 extends Phaser.Scene {
         this.points = 30;
     }
 
-
+    init(data) {
+        this.soundActive = data.soundActive;
+        console.log(this.soundActive);
+    }
 
     preload() {
         this.load.image('background', 'assets/images/background.png');
@@ -29,9 +32,11 @@ class level1 extends Phaser.Scene {
         this.load.image('heart_full', 'assets/images/heart_full.png');
         this.load.image('heart_empty', 'assets/images/heart_empty.png');
 
-        this.load.audio('fly', 'assets/sounds/fly.mp3');
-        this.load.audio('hit', 'assets/sounds/hit.ogg');
-        this.load.audio('die', 'assets/sounds/die.ogg');
+        if (this.soundActive) {
+            this.load.audio('fly', 'assets/sounds/fly.mp3');
+            this.load.audio('hit', 'assets/sounds/hit.ogg');
+            this.load.audio('die', 'assets/sounds/die.ogg');
+        }
     }
 
     create() {
@@ -159,10 +164,12 @@ class level1 extends Phaser.Scene {
     }
 
     hitObstacle(actor, obstacle) {
-        this.sound.add('hit').play({
-            volume: .1,
-            loop: false
-        });
+        if (this.soundActive) {
+            this.sound.add('hit').play({
+                volume: .1,
+                loop: false
+            });
+        }
         if (obstacle !== undefined) {
             //Remove obstacle collisions once is hit
             obstacle.body.checkCollision.none = true;
@@ -177,10 +184,12 @@ class level1 extends Phaser.Scene {
     }
 
     gameOver() {
-        this.sound.add('die').play({
-            volume: .1,
-            loop: false
-        });
+        if (this.soundActive) {
+            this.sound.add('die').play({
+                volume: .1,
+                loop: false
+            });
+        }
 
         this.dragonF.play('dragonF_explode');
         this.dragonF.setTint(0xff0000);
@@ -211,10 +220,12 @@ class level1 extends Phaser.Scene {
         }
 
         if (this.cursor.up.isDown) {
-            this.sound.add('fly').play({
-                volume: .05,
-                loop: false
-            });
+            if (this.soundActive) {
+                this.sound.add('fly').play({
+                    volume: .05,
+                    loop: false
+                });
+            }
             this.dragonF.setVelocityY(-250);
         }
 
