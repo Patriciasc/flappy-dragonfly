@@ -21,122 +21,50 @@ class Level1 extends Phaser.Scene {
         this.birds = null;
         this.birdAnims = null;
         this.timer = null;
-        this.lifesNum = 3;
-        this.lifesNumBee = 3; //TODO: refactor in player object or similar
-        this.lifes = null;
-        this.beeLifes = null;
         this.counter = "";
         this.initialTime = 60000;
         this.lifeY = 30;
-        this.points = 30;
-        this.pointsBee = 30;
-        this.bee = null;
         this.players = {};
     }
 
     init(data) {
+        // Check user selection for multiplayer.
         this.multiPlayer = data.multiPlayer;
     }
 
     preload() {
-        this.load.image('background', 'assets/images/background.png');
-        this.load.spritesheet('dragonF_fly', 'assets/images/dragonF_flying.png', { frameWidth: 243, frameHeight: 195 });
-        this.load.spritesheet('dragonF_explode', 'assets/images/dragonF_explode.png', { frameWidth: 378, frameHeight: 211 });
-        this.load.image('tree', 'assets/images/tree2_psc.png');
-        this.load.atlas('bird', 'assets/images/bird_flying.png', 'assets/images/bird_flying.json');
-        this.load.image('heart_full', 'assets/images/heart_full.png');
-        this.load.image('heart_empty', 'assets/images/heart_empty.png');
-        if (this.multiPlayer) {this.load.image('bee', 'assets/images/bee.png')};
-
-        this.load.audio('fly', 'assets/sounds/fly.mp3');
-        this.load.audio('hit', 'assets/sounds/hit.ogg');
-        this.load.audio('die', 'assets/sounds/die.ogg');
+        // Load necessary assets
+        this.loadImages();
+        this.loadSounds();
     }
 
     create() {
+        // Add background
         this.add.image(400, 250, 'background');
 
+        // Add counter
         this.counter = this.add.text(800, 15,"", { fontSize: '30px', fill: '#fff' });
 
-        // bird
-        this.birdAnims = this.anims.create({
-            key: 'bird_fly',
-            frames: this.anims.generateFrameNames('bird', {
-                start: 1,
-                end: 10,
-                zeroPad: 4,
-                prefix: 'Blue_Bird_Flying',
-                suffix: '.png'
-            }),
-            frameRate: 60,
-            repeat: -1
-        });
+        // Add actors
+        this.addActors();
 
-        // dragonFly
-        this.dragonF = this.physics.add.sprite(100, 100, 'dragonF_fly');
-        this.dragonF.setScale(0.30);
-        this.dragonF.setBounce(0.4);
-        this.dragonF.setCollideWorldBounds(true);
-        this.dragonF.body.onWorldBounds = true;
-        this.dragonF.body.setGravityY(100);
-        this.dragonF.body.immovable = true;
-        this.dragonF.setDepth(1);
-        this.anims.create({
-            key: 'dragonF_fly',
-            frames: this.anims.generateFrameNumbers('dragonF_fly'),
-            frameRate: 20,
-            repeat: -1
-        });
-        this.anims.create({
-            key: 'dragonF_explode',
-            frames: this.anims.generateFrameNumbers('dragonF_explode'),
-            frameRate: 10,
-            repeat: 0,
-        });
-        this.dragonF.play('dragonF_fly');
-
-        if (this.multiPlayer) {
-            this.addPlayer(115, 100, 'bee', 0.05, 0.4, 100);
-        }
-
-        // lifes
-        this.lifes = this.add.group();
-        var x = 40;
-
-        if (this.multiPlayer) {
-            this.players['bee'].lifes = this.add.group();
-            //this.beeLifes = this.add.group();
-            var x2 = 150;
-        }
-
-        for (var i = 0; i < this.lifesNum; i++) {
-            var life = this.lifes.create(x, this.lifeY, 'heart_full');
-            life.setScale(0.05);
-            life.setTintFill(0x9000bc);
-            x += 30;
-
-            if (this.multiPlayer) {
-                var blife = this.players['bee'].lifes.create(x2, this.lifeY, 'heart_full');
-                blife.setScale(0.05);
-                blife.setTintFill(0xffff00);
-                x2 += 30;
-            }
-        }
+        // Add Animations
+        this.addAnimations();
 
         // Keys control
         this.cursor = this.input.keyboard.createCursorKeys();
         if (this.multiPlayer) {this.input.keyboard.on('keydown_SPACE', this.flyPlayer, this);}
 
-        // Obstacles:
+        // Add Obstacles
         // trees
         this.trees = this.physics.add.group();
 
         //birds
         this.birds = this.physics.add.group();
 
-        // Collision control
-        this.physics.add.collider(this.dragonF, this.trees, this.hitObstacle, null, this);
-        this.physics.add.collider(this.dragonF, this.birds, this.hitObstacle, null, this);
+        // Add collision control
+        this.physics.add.collider(this.players['dragonF_fly'].obj, this.trees, this.hitObstacle, null, this);
+        this.physics.add.collider(this.players['dragonF_fly'].obj, this.birds, this.hitObstacle, null, this);
 
         if (this.multiPlayer) {
             this.physics.add.collider(this.players['bee'].obj, this.trees, this.hitObstacle, null, this);
@@ -156,8 +84,7 @@ class Level1 extends Phaser.Scene {
         this.player.body.immovable = true;
         this.player.setDepth(1);
 
-        this.players[this.player.texture.key] = new Player(this.player);
-        console.log(this.players);
+        this.players[key] = new Player(this.player);
     }
 
     flyPlayer() {
@@ -167,8 +94,8 @@ class Level1 extends Phaser.Scene {
     showRating() {
         this.scene.stop();
         this.scene.start("ratingS", {
-            points: this.points,
-            pointsBee: this.pointsBee
+            players: this.players,
+            multiPlayer: this.multiPlayer
         });
     }
 
@@ -277,6 +204,91 @@ class Level1 extends Phaser.Scene {
         this.time.delayedCall(4000, this.showRating, [], this);
     }
 
+    loadImages() {
+        this.load.image('background', 'assets/images/background.png');
+        this.load.spritesheet('dragonF_fly', 'assets/images/dragonF_flying.png', { frameWidth: 243, frameHeight: 195 });
+        this.load.spritesheet('dragonF_explode', 'assets/images/dragonF_explode.png', { frameWidth: 378, frameHeight: 211 });
+        this.load.image('tree', 'assets/images/tree2_psc.png');
+        this.load.atlas('bird', 'assets/images/bird_flying.png', 'assets/images/bird_flying.json');
+        this.load.image('heart_full', 'assets/images/heart_full.png');
+        this.load.image('heart_empty', 'assets/images/heart_empty.png');
+        if (this.multiPlayer) { this.load.image('bee', 'assets/images/bee.png') };
+    }
+
+    loadSounds() {
+        this.load.audio('fly', 'assets/sounds/fly.mp3');
+        this.load.audio('hit', 'assets/sounds/hit.ogg');
+        this.load.audio('die', 'assets/sounds/die.ogg');
+    }
+
+    addActors() {
+        // bee
+        if (this.multiPlayer) {
+            this.addPlayer(115, 100, 'bee', 0.05, 0.4, 100);
+        }
+
+        // dragonFly
+        this.addPlayer(100, 100, 'dragonF_fly', 0.30, 0.4, 100);
+
+        // load life for actors
+        this.loadLife();
+    }
+
+    loadLife() {
+        this.players['dragonF_fly'].lifes = this.add.group();
+
+        if (this.multiPlayer) {
+            this.players['bee'].lifes = this.add.group();
+            var x2 = 150;
+        }
+
+        var x = 40;
+        for (var i = 0; i < lifeCount; i++) {
+            var life = this.players['dragonF_fly'].lifes.create(x, this.lifeY, 'heart_full');
+            life.setScale(0.05);
+            life.setTintFill(0x9000bc);
+            x += 30;
+
+            if (this.multiPlayer) {
+                var blife = this.players['bee'].lifes.create(x2, this.lifeY, 'heart_full');
+                blife.setScale(0.05);
+                blife.setTintFill(0xffff00);
+                x2 += 30;
+            }
+        }
+    }
+
+    addAnimations() {
+        //dragonFly
+        this.anims.create({
+            key: 'dragonF_fly',
+            frames: this.anims.generateFrameNumbers('dragonF_fly'),
+            frameRate: 20,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'dragonF_explode',
+            frames: this.anims.generateFrameNumbers('dragonF_explode'),
+            frameRate: 10,
+            repeat: 0,
+        });
+        this.players['dragonF_fly'].obj.play('dragonF_fly');
+
+        // bird
+        this.birdAnims = this.anims.create({
+            key: 'bird_fly',
+            frames: this.anims.generateFrameNames('bird', {
+                start: 1,
+                end: 10,
+                zeroPad: 4,
+                prefix: 'Blue_Bird_Flying',
+                suffix: '.png'
+            }),
+            frameRate: 60,
+            repeat: -1
+        });
+    }
+
     update() {
         // trees
         this.moreTrees++;
@@ -292,7 +304,7 @@ class Level1 extends Phaser.Scene {
                 volume: .05,
                 loop: false
             });
-            this.dragonF.setVelocityY(-250);
+            this.players['dragonF_fly'].obj.setVelocityY(-250);
         }
 
         this.counter.setText(((this.initialTime/1000)-this.timer.getElapsedSeconds()).toString().substr(0,2).replace('.',''));
