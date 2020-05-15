@@ -4,9 +4,7 @@ class Rating extends Phaser.Scene {
     }
 
     init(data) {
-        this.players = data.players;
-        this.multiPlayer = data.multiPlayer;
-    }
+        this.players = data.players;    }
 
     preload() {
         this.load.image('dragonFly_rating', 'assets/images/dragonF_rating.png');

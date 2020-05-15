@@ -95,7 +95,6 @@ class Level1 extends Phaser.Scene {
         this.scene.stop();
         this.scene.start("ratingS", {
             players: this.players,
-            multiPlayer: this.multiPlayer
         });
     }
 
