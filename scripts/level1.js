@@ -132,7 +132,9 @@ class Level1 extends Phaser.Scene {
     }
 
     addBird(tree) {
-        var bird = this.physics.add.sprite(tree.x + 200, tree.y - 200, 'bird');
+        var y = Math.floor((Math.random() * 400-40) + 100); 
+        //var bird = this.physics.add.sprite(tree.x + 200, tree.y - 200, 'bird');
+        var bird = this.physics.add.sprite(tree.x + 80, y, 'bird');
         this.birds.add(bird, false);
         bird.body.allowGravity = false;
         bird.setScale(0.25);
@@ -208,7 +210,7 @@ class Level1 extends Phaser.Scene {
         this.load.spritesheet('dragonF_fly', 'assets/images/dragonF_flying.png', { frameWidth: 243, frameHeight: 195 });
         this.load.spritesheet('dragonF_explode', 'assets/images/dragonF_explode.png', { frameWidth: 378, frameHeight: 211 });
         this.load.image('tree', 'assets/images/tree2_psc.png');
-        this.load.atlas('bird', 'assets/images/bird_flying.png', 'assets/images/bird_flying.json');
+        this.load.atlas('bird', 'assets/images/bb_flying.png', 'assets/images/bb_flying.json');
         this.load.image('heart_full', 'assets/images/heart_full.png');
         this.load.image('heart_empty', 'assets/images/heart_empty.png');
         if (this.multiPlayer) { this.load.image('bee', 'assets/images/bee.png') };
@@ -279,11 +281,11 @@ class Level1 extends Phaser.Scene {
             frames: this.anims.generateFrameNames('bird', {
                 start: 1,
                 end: 10,
-                zeroPad: 4,
-                prefix: 'Blue_Bird_Flying',
+                zeroPad: 2,
+                prefix: 'bb',
                 suffix: '.png'
             }),
-            frameRate: 60,
+            frameRate: 40,
             repeat: -1
         });
     }
