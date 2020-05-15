@@ -35,7 +35,7 @@ class Intro extends Phaser.Scene {
         });
 
         this.timer = this.time.addEvent({
-            delay: 1000,
+            delay: 800,
             callback: this.updateText,
             callbackScope: this,
             loop: true
