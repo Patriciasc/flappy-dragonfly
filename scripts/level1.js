@@ -101,6 +101,8 @@ class Level1 extends Phaser.Scene {
     addObstacles(x, y) {
         var tree = this.trees.create(x, y, 'tree');
         var treeType = Math.floor(Math.random() * 5);
+        console.log(treeType);
+
         switch (treeType) {
             case 0:
                 tree.scaleX = .4;
@@ -109,6 +111,7 @@ class Level1 extends Phaser.Scene {
             case 1:
                 tree.scaleX = .2;
                 tree.y += 100;
+                this.addBird(tree);
                 break;
             case 2:
                 tree.scaleX = .5;
@@ -132,8 +135,9 @@ class Level1 extends Phaser.Scene {
     }
 
     addBird(tree) {
-        var y = Math.floor((Math.random() * 400-40) + 100); 
-        //var bird = this.physics.add.sprite(tree.x + 200, tree.y - 200, 'bird');
+        //Math.floor(Math.random()*(max-min+1)+min);
+        var y = Math.floor(Math.random() * (280 - 180 + 1) + 180);
+        console.log(tree.x+80, y);
         var bird = this.physics.add.sprite(tree.x + 80, y, 'bird');
         this.birds.add(bird, false);
         bird.body.allowGravity = false;
