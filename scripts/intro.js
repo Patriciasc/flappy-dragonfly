@@ -2,8 +2,11 @@ class intro extends Phaser.Scene {
     constructor() {
         super("introS");
 
+        self = this;
         this.timer = 0;
-        this.text = "";
+        this.text1p = "";
+        this.text2p = "";
+        this.multiPlayer = false;
     }
 
     preload() {
@@ -15,23 +18,40 @@ class intro extends Phaser.Scene {
         this.add.image(400, 250, 'dragonFly_intro');
 
         this.add.text(50, 50, "Welcome to flappy dragonfly!", {fontSize: '43px'});
-        this.text = this.add.text(game.config.width / 2 - 180, game.config.height / 2 + 170, "Press ENTER to start playing", { fontSize: '20px', fill: '#fff' });
-        this.text.setStroke('#E52828', 5);
+        this.text1p = this.add.text(200, 420, "1 player", { fontSize: '20px', fill: '#fff' });
+        this.text2p = this.add.text(this.text1p.x + 290, 420, "2 players", { fontSize: '20px', fill: '#fff' });
+        
+        this.text1p.setStroke('#E52828', 5);
+        this.text2p.setStroke('#E52828', 5);
+        
+        this.text1p.setInteractive().on('pointerdown', function () {
+            self.multiPlayer = false;
+            self.startGame();
+        });
+
+        this.text2p.setInteractive().on('pointerdown', function () {
+            self.multiPlayer = true;
+            self.startGame();
+        });
+
         this.timer = this.time.addEvent({
-            delay: 800,
+            delay: 300,
             callback: this.updateText,
             callbackScope: this,
             loop: true
         });
 
+        // 1 player by default
         this.input.keyboard.on('keydown_ENTER', this.startGame, this);
     }
 
     updateText() {
-        this.text.visible = !this.text.visible;
+        this.text1p.visible = !this.text1p.visible;
+        this.text2p.visible = !this.text2p.visible;
     }
 
     startGame() {
-        this.scene.start("level1S");
+        this.scene.stop();
+        this.scene.start("level1S", { multiPlayer: this.multiPlayer });
     }
 }

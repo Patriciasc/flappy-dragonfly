@@ -2,7 +2,6 @@ class level1 extends Phaser.Scene {
     constructor() {
         super("level1S");
 
-        self = this;
         this.dragonF = null;
         this.trees = null;
         this.cursor = null;
@@ -13,12 +12,17 @@ class level1 extends Phaser.Scene {
         this.lifesNum = 3;
         this.lifesNumBee = 3; //TODO: refactor in player object or similar
         this.lifes = null;
+        this.beeLifes = null;
         this.counter = "";
         this.initialTime = 60000;
         this.lifeY = 30;
         this.points = 30;
-        this.multiPlayer = true;
+        this.pointsBee = 30;
         this.bee = null;
+    }
+
+    init(data) {
+        this.multiPlayer = data.multiPlayer;
     }
 
     preload() {
@@ -29,7 +33,7 @@ class level1 extends Phaser.Scene {
         this.load.atlas('bird', 'assets/images/bird_flying.png', 'assets/images/bird_flying.json');
         this.load.image('heart_full', 'assets/images/heart_full.png');
         this.load.image('heart_empty', 'assets/images/heart_empty.png');
-        this.load.image('bee', 'assets/images/bee.png');
+        if (this.multiPlayer) {this.load.image('bee', 'assets/images/bee.png')};
 
         this.load.audio('fly', 'assets/sounds/fly.mp3');
         this.load.audio('hit', 'assets/sounds/hit.ogg');
@@ -45,20 +49,23 @@ class level1 extends Phaser.Scene {
         this.lifes = this.add.group();
         var x = 40;
 
+        if (this.multiPlayer) {
+            this.beeLifes = this.add.group();
+            var xbee=150;
+        }
+
         for (var i = 0; i < this.lifesNum; i++) {
             var life = this.lifes.create(x, this.lifeY, 'heart_full');
             life.setScale(0.05);
-            life.tint = 0x9000bc;
             life.setTintFill(0x9000bc);
             x += 30;
-        }
 
-        for (var i = 0; i < this.lifesNumBee; i++) {
-            var life = this.lifes.create(x, this.lifeY, 'heart_full');
-            life.setScale(0.05);
-            life.tint = 0x9000bc;
-            life.setTintFill(0x9000bc);
-            x += 30;
+            if (this.multiPlayer) {
+                var blife = this.beeLifes.create(xbee, this.lifeY, 'heart_full');
+                blife.setScale(0.05);
+                blife.setTintFill(0xffff00);
+                xbee += 30;
+            }
         }
 
         // bird
@@ -98,18 +105,20 @@ class level1 extends Phaser.Scene {
         });
         this.dragonF.play('dragonF_fly');
 
-        //bee
-        this.bee = this.physics.add.sprite(100, 100, 'bee').setScale(0.05);
-        this.bee.setBounce(0.4);
-        this.bee.setCollideWorldBounds(true);
-        this.bee.body.onWorldBounds = true;
-        this.bee.body.setGravityY(100);
-        this.bee.body.immovable = true;
-        this.bee.setDepth(1);
+        if (this.multiPlayer) {
+            //bee
+            this.bee = this.physics.add.sprite(115, 100, 'bee').setScale(0.05);
+            this.bee.setBounce(0.4);
+            this.bee.setCollideWorldBounds(true);
+            this.bee.body.onWorldBounds = true;
+            this.bee.body.setGravityY(100);
+            this.bee.body.immovable = true;
+            this.bee.setDepth(1);
+        }
 
         // Keys control
         this.cursor = this.input.keyboard.createCursorKeys();
-        this.input.keyboard.on('keydown_SPACE', this.flyBee, this);
+        if (this.multiPlayer) {this.input.keyboard.on('keydown_SPACE', this.flyBee, this);}
 
         // Obstacles:
         // trees
@@ -120,10 +129,12 @@ class level1 extends Phaser.Scene {
 
         // Collision control
         this.physics.add.collider(this.dragonF, this.trees, this.hitObstacle, null, this);
-        this.physics.add.collider(this.dragonF, this.birds, this.hitObstacle, null, self);
+        this.physics.add.collider(this.dragonF, this.birds, this.hitObstacle, null, this);
 
-        this.physics.add.collider(this.bee, this.trees, this.hitObstacle, null, this);
-        this.physics.add.collider(this.bee, this.birds, this.hitObstacle, null, self);
+        if (this.multiPlayer) {
+            this.physics.add.collider(this.bee, this.trees, this.hitObstacle, null, this);
+            this.physics.add.collider(this.bee, this.birds, this.hitObstacle, null, this);
+        }
 
         // Timer
         this.timer = this.time.delayedCall(this.initialTime, this.loadNextLevel, [], this);
@@ -135,6 +146,7 @@ class level1 extends Phaser.Scene {
 
     loadNextLevel() {
         // Load next level
+        this.scene.stop();
         this.scene.start("ratingS", {points: this.points});
         // Maybe helpful
         //self.scene.restart();
@@ -175,7 +187,7 @@ class level1 extends Phaser.Scene {
     }
 
     addBird(tree) {
-        var bird = self.physics.add.sprite(tree.x + 200, tree.y - 200, 'bird');
+        var bird = this.physics.add.sprite(tree.x + 200, tree.y - 200, 'bird');
         this.birds.add(bird, false);
         bird.body.allowGravity = false;
         bird.setScale(0.25);
@@ -195,13 +207,24 @@ class level1 extends Phaser.Scene {
             //Remove obstacle collisions once is hit
             obstacle.body.checkCollision.none = true;
             this.cameras.main.shake(80);
-            var life = this.lifes.children.entries[this.lifesNum - 1];
-            life.destroy();
-            life = this.add.image(life.x, this.lifeY, 'heart_empty').setScale(0.05);
-            life.setTintFill(0x9000bc);
-            this.lifesNum--;
-            this.points -= 10;
-            if (this.lifesNum === 0) return this.gameOver();
+            if (actor.texture.key === 'dragonF_fly') {
+                //if (this.multiPlayer) {obstacle.destroy();}
+                var life = this.lifes.children.entries[this.lifesNum - 1];
+                life.destroy();
+                life = this.add.image(life.x, this.lifeY, 'heart_empty').setScale(0.05);
+                life.setTintFill(0x9000bc);
+                this.lifesNum--;
+                this.points -= 10;
+            } else {
+                //if (this.multiPlayer) {obstacle.destroy();}
+                var lifeb = this.beeLifes.children.entries[this.lifesNumBee - 1];
+                lifeb.destroy();
+                lifeb = this.add.image(lifeb.x, this.lifeY, 'heart_empty').setScale(0.05);
+                lifeb.setTintFill(0xffff00);
+                this.lifesNumBee--;
+                this.pointsBee -= 10;
+            }
+            if (this.lifesNum === 0 || this.lifesNumBee === 0) return this.gameOver();
         }
     }
 
@@ -211,22 +234,34 @@ class level1 extends Phaser.Scene {
             loop: false
         });
 
-        this.dragonF.play('dragonF_explode');
-        this.dragonF.setTint(0xff0000);
+        var lostText = "";
+        if (this.lifesNum === 0) {
+            this.dragonF.play('dragonF_explode');
+            this.dragonF.setTint(0xff0000);
+            lostText = this.add.text(game.config.width / 2 - 120, game.config.height / 2 - 80, 'dragonFly has lost!', { fontSize: '25px', fill: '#9000bc' });
+            lostText.setDepth(2);
+        } else {
+            this.bee.setTint(0xff0000);
+            lostText = this.add.text(game.config.width / 2 - 80, game.config.height / 2 - 80, 'bee has lost!', { fontSize: '25px', fill: '#ffff00' });
+            lostText.setDepth(2);
+        }
+
         //TODO: make it fall to the floor? :D
 
-        self.cameras.main.shake(500);
-        self.physics.pause();
+        this.cameras.main.shake(500);
+        this.physics.pause();
         this.trees.clear();
 
         this.birdAnims.pause();
         this.birds.clear();
 
-        var statusText = self.add.text(game.config.width / 2 - 120, game.config.height / 2 - 50, 'GAME OVER', { fontSize: '50px', fill: '#fff' });
+        var statusText = this.add.text(game.config.width / 2 - 130, game.config.height / 2 - 50, 'GAME OVER', { fontSize: '50px', fill: '#fff' });
         statusText.setDepth(1);
         statusText.setStroke('#E52828', 20);
 
-        self.timer.remove();
+        this.timer.remove();
+
+        //this.time.delayedCall(4000, this.loadNextLevel, [], this);
     }
 
     update() {
