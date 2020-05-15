@@ -10,7 +10,7 @@ var config = {
             debug: false
         }
     },
-    scene: [intro, level1, rating],
+    scene: [Intro, Level1, Rating],
     render: { pixelArt: true }
 };
 

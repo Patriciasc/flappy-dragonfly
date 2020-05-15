@@ -1,4 +1,4 @@
-class level1 extends Phaser.Scene {
+class Level1 extends Phaser.Scene {
     constructor() {
         super("level1S");
 
@@ -137,20 +137,19 @@ class level1 extends Phaser.Scene {
         }
 
         // Timer
-        this.timer = this.time.delayedCall(this.initialTime, this.loadNextLevel, [], this);
+        this.timer = this.time.delayedCall(this.initialTime, this.showRating, [], this);
     }
 
     flyBee() {
         this.bee.setVelocityY(-450);
     }
 
-    loadNextLevel() {
-        // Load next level
+    showRating() {
         this.scene.stop();
-        this.scene.start("ratingS", {points: this.points});
-        // Maybe helpful
-        //self.scene.restart();
-        //this.anims.pauseAll();
+        this.scene.start("ratingS", {
+            points: this.points,
+            pointsBee: this.pointsBee
+        });
     }
 
     addObstacles(x, y) {
@@ -261,7 +260,7 @@ class level1 extends Phaser.Scene {
 
         this.timer.remove();
 
-        //this.time.delayedCall(4000, this.loadNextLevel, [], this);
+        this.time.delayedCall(4000, this.showRating, [], this);
     }
 
     update() {
