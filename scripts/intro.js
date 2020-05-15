@@ -1,4 +1,4 @@
-class intro extends Phaser.Scene {
+class Intro extends Phaser.Scene {
     constructor() {
         super("introS");
 
@@ -35,7 +35,7 @@ class intro extends Phaser.Scene {
         });
 
         this.timer = this.time.addEvent({
-            delay: 300,
+            delay: 1000,
             callback: this.updateText,
             callbackScope: this,
             loop: true
@@ -51,7 +51,9 @@ class intro extends Phaser.Scene {
     }
 
     startGame() {
-        this.scene.stop();
-        this.scene.start("level1S", { multiPlayer: this.multiPlayer });
+        this.scene.transition({
+            target: 'level1S',
+            data: { multiPlayer: this.multiPlayer }
+        });
     }
 }
