@@ -1,10 +1,11 @@
-var points = 30;
-var lifeCount = 3;
+const points = 30;
+const lifeCount = 3;
 
 class Player {
     constructor(obj) {
         this.obj = obj;
         this.points = points;
+        this.sumPoints = 0;
         this.lifeCount = lifeCount;
         this.lifes = null;
     }
@@ -22,9 +23,10 @@ class Level1 extends Phaser.Scene {
         this.birdAnims = null;
         this.timer = null;
         this.counter = "";
-        this.initialTime = 60000;
+        this.initialTime = 6000;
         this.lifeY = 30;
-        this.players = {};
+        //this.players = {};
+        this.speed = 100;
     }
 
     init(data) {
@@ -63,16 +65,19 @@ class Level1 extends Phaser.Scene {
         this.birds = this.physics.add.group();
 
         // Add collision control
-        this.physics.add.collider(this.players['dragonF_fly'].obj, this.trees, this.hitObstacle, null, this);
-        this.physics.add.collider(this.players['dragonF_fly'].obj, this.birds, this.hitObstacle, null, this);
+        this.physics.add.collider(players['dragonF_fly'].obj, this.trees, this.hitObstacle, null, this);
+        this.physics.add.collider(players['dragonF_fly'].obj, this.birds, this.hitObstacle, null, this);
 
         if (this.multiPlayer) {
-            this.physics.add.collider(this.players['bee'].obj, this.trees, this.hitObstacle, null, this);
-            this.physics.add.collider(this.players['bee'].obj, this.birds, this.hitObstacle, null, this);
+            this.physics.add.collider(players['bee'].obj, this.trees, this.hitObstacle, null, this);
+            this.physics.add.collider(players['bee'].obj, this.birds, this.hitObstacle, null, this);
         }
 
         // Timer
         this.timer = this.time.delayedCall(this.initialTime, this.showRating, [], this);
+
+        // Level
+        if (level >= 3) this.speed /= 2;
     }
 
     addPlayer(x, y, key, scale, bounce, gravity) {
@@ -84,44 +89,42 @@ class Level1 extends Phaser.Scene {
         this.player.body.immovable = true;
         this.player.setDepth(1);
 
-        this.players[key] = new Player(this.player);
+        players[key] = new Player(this.player);
     }
 
     flyPlayer() {
-        this.players['bee'].obj.setVelocityY(-450);
+        players['bee'].obj.setVelocityY(-450);
     }
 
     showRating() {
         this.scene.stop();
-        this.scene.start("ratingS", {
-            players: this.players,
-        });
+        this.scene.start("ratingS");
     }
 
     addObstacles(x, y) {
         var tree = this.trees.create(x, y, 'tree');
         var treeType = Math.floor(Math.random() * 5);
-
         switch (treeType) {
             case 0:
-                tree.scaleX = .4;
+                tree.scaleX = .3;
                 tree.y += 60;
                 break;
             case 1:
                 tree.scaleX = .2;
                 tree.y += 100;
-                this.addBird(tree);
+                if (level >= 2) this.addBird(tree);
                 break;
             case 2:
-                tree.scaleX = .5;
+                tree.scaleX = .3;
                 break;
             case 3:
                 tree.y += 170;
-                tree.scaleX = .7;
+                tree.scaleX = .5;
                 this.addBird(tree);
                 break;
             case 4:
-                tree.y += 60;
+                tree.scaleX = .2;
+                tree.y += 30;
                 break;
             default:
                 break;
@@ -158,15 +161,15 @@ class Level1 extends Phaser.Scene {
             this.cameras.main.shake(80);
             
             var key = actor.texture.key
-            var life = this.players[key].lifes.children.entries[this.players[key].lifeCount - 1];
+            var life = players[key].lifes.children.entries[players[key].lifeCount - 1];
             life.destroy();
             life = this.add.image(life.x, this.lifeY, 'heart_empty').setScale(0.05);
-            this.players[key].lifeCount--;
-            this.players[key].points -= 10;
+            players[key].lifeCount--;
+            players[key].points -= 10;
 
             key === 'bee' ? life.setTintFill(0xffff00) : life.setTintFill(0x9000bc);
 
-            if (this.players[key].lifeCount === 0) return this.gameOver(key);
+            if (players[key].lifeCount === 0) return this.gameOver(key);
 
         }
     }
@@ -238,22 +241,22 @@ class Level1 extends Phaser.Scene {
     }
 
     loadLife() {
-        this.players['dragonF_fly'].lifes = this.add.group();
+        players['dragonF_fly'].lifes = this.add.group();
 
         if (this.multiPlayer) {
-            this.players['bee'].lifes = this.add.group();
+            players['bee'].lifes = this.add.group();
             var x2 = 150;
         }
 
         var x = 40;
         for (var i = 0; i < lifeCount; i++) {
-            var life = this.players['dragonF_fly'].lifes.create(x, this.lifeY, 'heart_full');
+            var life = players['dragonF_fly'].lifes.create(x, this.lifeY, 'heart_full');
             life.setScale(0.05);
             life.setTintFill(0x9000bc);
             x += 30;
 
             if (this.multiPlayer) {
-                var blife = this.players['bee'].lifes.create(x2, this.lifeY, 'heart_full');
+                var blife = players['bee'].lifes.create(x2, this.lifeY, 'heart_full');
                 blife.setScale(0.05);
                 blife.setTintFill(0xffff00);
                 x2 += 30;
@@ -275,7 +278,7 @@ class Level1 extends Phaser.Scene {
             frameRate: 10,
             repeat: 0,
         });
-        this.players['dragonF_fly'].obj.play('dragonF_fly');
+        players['dragonF_fly'].obj.play('dragonF_fly');
 
         // bird
         this.birdAnims = this.anims.create({
@@ -295,7 +298,8 @@ class Level1 extends Phaser.Scene {
     update() {
         // trees
         this.moreTrees++;
-        if (this.moreTrees === 100) {
+
+        if (this.moreTrees === this.speed) {
             var tree = this.addObstacles(950, 350);
             tree.setOrigin(0, 0);
             this.trees.setVelocityX(-200);
@@ -307,7 +311,7 @@ class Level1 extends Phaser.Scene {
                 volume: .05,
                 loop: false
             });
-            this.players['dragonF_fly'].obj.setVelocityY(-250);
+            players['dragonF_fly'].obj.setVelocityY(-250);
         }
 
         this.counter.setText(((this.initialTime/1000)-this.timer.getElapsedSeconds()).toString().substr(0,2).replace('.',''));

@@ -3,9 +3,6 @@ class Rating extends Phaser.Scene {
         super("ratingS");
     }
 
-    init(data) {
-        this.players = data.players;    }
-
     preload() {
         this.load.image('dragonFly_rating', 'assets/images/dragonF_rating.png');
     }
@@ -16,16 +13,32 @@ class Rating extends Phaser.Scene {
         var text = this.add.text(270, 40, "*** Rating *** ", { fontSize: '40px', fill: '#fff' });
 
         var y = 130;
-        for (const player in this.players) {
-            this.add.text(270, y, `${player}: ${this.players[player].points}`, { fontSize: '25px', fill: '#fff' });
+        var totalPoints = 0;
+        for (const player in players) {
+            totalPoints += players[player].points;
+            players[player].sumPoints += players[player].points;
+            this.add.text(270, y, `${player}: ${players[player].sumPoints }`, { fontSize: '25px', fill: '#fff' });
             y -=40;
         }
 
-        this.input.keyboard.on('keydown_ENTER', this.reStartGame, this);
+        if (totalPoints > 0 && level < 3) {
+            level++;
+            this.add.text(250, 420, "Press ENTER to level up!", { fontSize: '25px', fill: '#fff' }).setStroke('#E52828', 5);
+            this.input.keyboard.on('keydown_ENTER', this.loadNextLevel, this);
+        } else {
+            this.add.text(200, 420, "Press SPACE to start again!", { fontSize: '25px', fill: '#fff' }).setStroke('#E52828', 5);
+            this.input.keyboard.on('keydown_SPACE', this.reStartGame, this);
+        }
     }
 
     reStartGame() {
+        this.scene.stop();
         this.sys.game.destroy(true);
         game = new Phaser.Game(config);
+    }
+
+    loadNextLevel() {
+        this.scene.stop();
+        this.scene.start("level1S");
     }
 }

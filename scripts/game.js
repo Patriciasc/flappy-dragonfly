@@ -14,4 +14,6 @@ var config = {
     render: { pixelArt: true }
 };
 
+var players = {};
+var level = 1;
 var game = new Phaser.Game(config);

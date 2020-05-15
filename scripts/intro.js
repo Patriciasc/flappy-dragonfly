@@ -18,11 +18,8 @@ class Intro extends Phaser.Scene {
         this.add.image(400, 250, 'dragonFly_intro');
 
         this.add.text(50, 50, "Welcome to flappy dragonfly!", {fontSize: '43px'});
-        this.text1p = this.add.text(200, 420, "1 player", { fontSize: '20px', fill: '#fff' });
-        this.text2p = this.add.text(this.text1p.x + 290, 420, "2 players", { fontSize: '20px', fill: '#fff' });
-        
-        this.text1p.setStroke('#E52828', 5);
-        this.text2p.setStroke('#E52828', 5);
+        this.text1p = this.add.text(200, 420, "1 player", { fontSize: '20px', fill: '#fff' }).setStroke('#E52828', 5);
+        this.text2p = this.add.text(this.text1p.x + 290, 420, "2 players", { fontSize: '20px', fill: '#fff' }).setStroke('#E52828', 5);
         
         this.text1p.setInteractive().on('pointerdown', function () {
             self.multiPlayer = false;
