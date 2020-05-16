@@ -3,6 +3,10 @@ class Rating extends Phaser.Scene {
         super("ratingS");
     }
 
+    init(data) {
+        this.gameFinished = data.gameFinished;
+    }
+
     preload() {
         this.load.image('dragonFly_rating', 'assets/images/dragonF_rating.png');
     }
@@ -20,7 +24,7 @@ class Rating extends Phaser.Scene {
             y -=40;
         }
 
-        if (totalPoints > 0 && level < 3) {
+        if (this.gameFinished && level < 3) {
             level++;
             this.add.text(250, 420, "Press ENTER to level up!", { fontSize: '25px', fill: '#fff' }).setStroke('#E52828', 5);
             this.input.keyboard.on('keydown_ENTER', this.loadNextLevel, this);
