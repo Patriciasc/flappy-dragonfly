@@ -9,6 +9,9 @@ class Intro extends Phaser.Scene {
         this.multiPlayer = false;
     }
 
+    init() {
+        level = 1;
+    }
     preload() {
         this.load.image('dragonFly_intro', 'assets/images/dragonFly_intro.png');
     }

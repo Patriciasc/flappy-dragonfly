@@ -171,7 +171,7 @@ class Level1 extends Phaser.Scene {
             players[key].lifeCount--;
             players[key].points -= 10;
 
-            key === 'bee' ? life.setTintFill(0xffff00) : life.setTintFill(0x9000bc);
+            key === 'bee' ? life.setTintFill(0xffd300) : life.setTintFill(0x9000bc);
 
             if (players[key].lifeCount === 0) return this.gameOver(key);
 
@@ -195,7 +195,7 @@ class Level1 extends Phaser.Scene {
                 break;
             case 'bee':
                 players['bee'].obj.play('bee_hit');
-                this.add.text(game.config.width / 2 - 80, game.config.height / 2 - 80, 'bee has lost!', { fontSize: '25px', fill: '#ffff00' }).setDepth(2);
+                this.add.text(game.config.width / 2 - 80, game.config.height / 2 - 80, 'bee has lost!', { fontSize: '25px', fill: '#ffd300' }).setDepth(2);
                 break;
         }
 
@@ -270,7 +270,7 @@ class Level1 extends Phaser.Scene {
             if (this.multiPlayer) {
                 var blife = players['bee'].lifes.create(x2, this.lifeY, 'heart_full');
                 blife.setScale(0.05);
-                blife.setTintFill(0xffff00);
+                blife.setTintFill(0xffd300);
                 x2 += 30;
             }
         }
