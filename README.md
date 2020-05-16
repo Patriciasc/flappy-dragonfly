@@ -1,37 +1,69 @@
-## Welcome to GitHub Pages
+# Flappy dragonFly!
+A game based on in Flappy Bird in Phaser 3.
 
-You can use the [editor on GitHub](https://github.com/Patriciasc/flappy-dragonfly/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+[Check the demo!](https://patriciasc.github.io/flappy-dragonfly/)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Table of Contents
+* Game screenshots
+* Features
+  - Levels
+  - Players
+* Assets
+* Used tools
+* How to
+  - Run it
+  - Play it
+* Coming next
+* License
 
-### Markdown
+## Game screenshots
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+## Features
+### Levels
+the game has 3 difficulty levels, which are incremental:
+* 1st level: familiarization with few obstacles.
+* 2nd level: addition of obstacles.
+* 3d level: increase in speed.
+### Players
+Currently, the game allows 1 or 2 players simultaneously.
 
+## Assets
+The assets used in this project came from:
+* Blue bird: https://cartoonsmart.com/animated-blue-bird-1/
+* Bee: https://opengameart.org/content/bee-enemy
+* Dragonfly: https://opengameart.org/content/dragonfly
+* Sounds: https://github.com/sourabhv/FlapPyBird/tree/master/assets/audio
+
+All other assets were self created with the down mentioned tools.
+
+## Used tools
+1. [Visual Studio Code](https://code.visualstudio.com/)
+2. [MAMP](https://www.mamp.info/en/mamp)
+3. [Phaser 3](https://phaser.io/phaser3)
+4. [Inkscape](https://inkscape.org/es/)
+5. [Gimp](http://www.gimp.org.es/)
+6. [TexturePacker](https://www.codeandweb.com/texturepacker)
+
+## How to 
+### Run it
+1. Clone this repository or click Download ZIP in right panel and extract it
 ```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+git clone https://github.com/Patriciasc/flappy-dragonfly.git
 ```
+2. Install an Http Server: XAMP, MAMP, GoLive
+3. Run the Http server from the repository's directory
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+### Play it
+Stay alive, as long as the meter is running. Every time you hit an obstacle (tree or bird), a life will be taken away from you.
 
-### Jekyll Themes
+For 1 player, keep flying by pressing the up arrow. If a second player joins, he must use the "space" key to keep flying.
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Patriciasc/flappy-dragonfly/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+### Coming next
+* Incorporation of new scenarios
+* Addition of new difficulty levels
+* Possibility to pause the game
+* New feature to disable sound
+* Score control between levels, so that it adds up, rather than resets to zero
 
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+## License
+[MIT License](https://opensource.org/licenses/MIT)
