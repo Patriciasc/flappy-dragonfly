@@ -17,6 +17,8 @@ A game based on in Flappy Bird in Phaser 3.
 * License
 
 ## Game screenshots
+![Game intro image](https://github.com/Patriciasc/flappy-dragonfly/blob/master/assets/images/intro.png)
+![Game image](https://github.com/Patriciasc/flappy-dragonfly/blob/master/assets/images/game.png)
 
 ## Features
 ### Levels
