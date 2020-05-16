@@ -26,6 +26,7 @@ class Level1 extends Phaser.Scene {
         this.lifeY = 30;
         this.speed = 100;
         this.gameFinished = false;
+        this.mainTheme = null;
     }
 
     init(data) {
@@ -77,6 +78,14 @@ class Level1 extends Phaser.Scene {
 
         // Level
         if (level >= 3) this.speed /= 2;
+
+        // Play game sound theme
+       this.mainTheme = this.sound.add('gameTheme');
+       this.mainTheme.play({
+            volume: .03,
+            loop: true
+        });
+        console.log(this.mainTheme);
     }
 
     addPlayer(x, y, key, scale, bounce, gravity) {
@@ -156,7 +165,7 @@ class Level1 extends Phaser.Scene {
 
     hitObstacle(actor, obstacle) {
         this.sound.add('hit').play({
-            volume: .1,
+            volume: .05,
             loop: false
         });
 
@@ -180,6 +189,9 @@ class Level1 extends Phaser.Scene {
 
     gameOver(key) {
         this.gameFinished= false;
+
+        console.log(this.mainTheme);
+        this.mainTheme.stop();
 
         this.sound.add('die').play({
             volume: .1,
@@ -237,6 +249,7 @@ class Level1 extends Phaser.Scene {
         this.load.audio('fly', 'assets/sounds/fly.mp3');
         this.load.audio('hit', 'assets/sounds/hit.ogg');
         this.load.audio('die', 'assets/sounds/die.ogg');
+        this.load.audio('gameTheme', 'assets/sounds/gameTheme.wav');
     }
 
     addActors() {
@@ -350,7 +363,7 @@ class Level1 extends Phaser.Scene {
 
         if (this.cursor.up.isDown) {
             this.sound.add('fly').play({
-                volume: .05,
+                volume: .015,
                 loop: false
             });
             players['dragonF_fly'].obj.setVelocityY(-250);
