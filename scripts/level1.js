@@ -102,6 +102,10 @@ class Level1 extends Phaser.Scene {
     }
 
     flyPlayer() {
+        this.sound.add('fly').play({
+            volume: .05,
+            loop: false
+        });
         players['bee'].obj.setVelocityY(-250);
     }
 
