@@ -16,8 +16,7 @@ class Rating extends Phaser.Scene {
         var totalPoints = 0;
         for (const player in players) {
             totalPoints += players[player].points;
-            players[player].sumPoints += players[player].points;
-            this.add.text(270, y, `${player}: ${players[player].sumPoints }`, { fontSize: '25px', fill: '#fff' });
+            this.add.text(270, y, `${player}: ${players[player].points}`, { fontSize: '25px', fill: '#fff' });
             y -=40;
         }
 

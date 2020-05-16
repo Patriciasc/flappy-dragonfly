@@ -5,7 +5,6 @@ class Player {
     constructor(obj) {
         this.obj = obj;
         this.points = points;
-        this.sumPoints = 0;
         this.lifeCount = lifeCount;
         this.lifes = null;
     }
