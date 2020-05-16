@@ -1,0 +1,125 @@
+{
+	"textures": [
+		{
+			"image": "bee_hit.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 803,
+				"h": 126
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "bee_hit01png.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 162,
+						"h": 127
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 156,
+						"h": 124
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 156,
+						"h": 124
+					}
+				},
+				{
+					"filename": "bee_hit02.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 162,
+						"h": 127
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 2,
+						"w": 162,
+						"h": 122
+					},
+					"frame": {
+						"x": 159,
+						"y": 1,
+						"w": 162,
+						"h": 122
+					}
+				},
+				{
+					"filename": "bee_hit03.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 162,
+						"h": 127
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 2,
+						"w": 162,
+						"h": 122
+					},
+					"frame": {
+						"x": 323,
+						"y": 1,
+						"w": 162,
+						"h": 122
+					}
+				},
+				{
+					"filename": "bee_hit04.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 162,
+						"h": 127
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 2,
+						"w": 155,
+						"h": 122
+					},
+					"frame": {
+						"x": 487,
+						"y": 1,
+						"w": 155,
+						"h": 122
+					}
+				},
+				{
+					"filename": "bee_hit05.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 162,
+						"h": 127
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 5,
+						"w": 158,
+						"h": 119
+					},
+					"frame": {
+						"x": 644,
+						"y": 1,
+						"w": 158,
+						"h": 119
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:61e9108f7be06ced3cd856a3b03f58d4:6f38f78fb6d34ed22602c703b6242e29:a3791522168290051941e2d2d3c28882$"
+	}
+}

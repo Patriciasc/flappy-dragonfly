@@ -194,6 +194,7 @@ class Level1 extends Phaser.Scene {
                 this.add.text(game.config.width / 2 - 120, game.config.height / 2 - 80, 'dragonFly has lost!', { fontSize: '25px', fill: '#9000bc' }).setDepth(2);
                 break;
             case 'bee':
+                players['bee'].obj.play('bee_hit');
                 this.add.text(game.config.width / 2 - 80, game.config.height / 2 - 80, 'bee has lost!', { fontSize: '25px', fill: '#ffff00' }).setDepth(2);
                 break;
         }
@@ -225,7 +226,10 @@ class Level1 extends Phaser.Scene {
         this.load.image('heart_full', 'assets/images/heart_full.png');
         this.load.image('heart_empty', 'assets/images/heart_empty.png');
         //if (this.multiPlayer) { this.load.image('bee', 'assets/images/bee.png') };
-        if (this.multiPlayer) { this.load.atlas('bee', 'assets/images/bee.png', 'assets/images/bee.json') };
+        if (this.multiPlayer) { 
+            this.load.atlas('bee', 'assets/images/bee.png', 'assets/images/bee.json');
+            this.load.atlas('bee_hit', 'assets/images/bee_hit.png', 'assets/images/bee_hit.json');
+         };
 
     }
 
@@ -304,6 +308,19 @@ class Level1 extends Phaser.Scene {
 
         // bee
         if (this.multiPlayer) {
+            this.anims.create({
+                key: 'bee_hit',
+                frames: this.anims.generateFrameNames('bee_hit', {
+                    start: 1,
+                    end: 5,
+                    zeroPad: 2,
+                    prefix: 'bee_hit',
+                    suffix: '.png'
+                }),
+                frameRate: 10,
+                repeat: -1
+            });
+
             this.anims.create({
                 key: 'bee_fly',
                 frames: this.anims.generateFrameNames('bee', {
