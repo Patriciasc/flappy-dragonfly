@@ -22,9 +22,8 @@ class Level1 extends Phaser.Scene {
         this.birdAnims = null;
         this.timer = null;
         this.counter = "";
-        this.initialTime = 6000;
+        this.initialTime = 60000;
         this.lifeY = 30;
-        //this.players = {};
         this.speed = 100;
     }
 
@@ -179,11 +178,11 @@ class Level1 extends Phaser.Scene {
             loop: false
         });
 
-        this.players[key].obj.setTint(0xff0000);
+        players[key].obj.setTint(0xff0000);
         
         switch (key) {
             case 'dragonF_fly': 
-                this.players[key].obj.play('dragonF_explode');
+                players[key].obj.play('dragonF_explode');
                 this.add.text(game.config.width / 2 - 120, game.config.height / 2 - 80, 'dragonFly has lost!', { fontSize: '25px', fill: '#9000bc' }).setDepth(2);
                 break;
             case 'bee':
