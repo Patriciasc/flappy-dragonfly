@@ -25,6 +25,7 @@ class Level1 extends Phaser.Scene {
         this.initialTime = 60000;
         this.lifeY = 30;
         this.speed = 100;
+        this.gameFinished = false;
     }
 
     init(data) {
@@ -72,7 +73,7 @@ class Level1 extends Phaser.Scene {
         }
 
         // Timer
-        this.timer = this.time.delayedCall(this.initialTime, this.showRating, [], this);
+        this.timer = this.time.delayedCall(this.initialTime, this.timeIsOut, [], this);
 
         // Level
         if (level >= 3) this.speed /= 2;
@@ -94,9 +95,14 @@ class Level1 extends Phaser.Scene {
         players['bee'].obj.setVelocityY(-450);
     }
 
+    timeIsOut() {
+        this.gameFinished = true;
+        this.showRating();
+    }
+
     showRating() {
         this.scene.stop();
-        this.scene.start("ratingS");
+        this.scene.start("ratingS", {gameFinished: this.gameFinished});
     }
 
     addObstacles(x, y) {
@@ -173,6 +179,8 @@ class Level1 extends Phaser.Scene {
     }
 
     gameOver(key) {
+        this.gameFinished= false;
+
         this.sound.add('die').play({
             volume: .1,
             loop: false
@@ -216,7 +224,9 @@ class Level1 extends Phaser.Scene {
         this.load.atlas('bird', 'assets/images/bb_flying.png', 'assets/images/bb_flying.json');
         this.load.image('heart_full', 'assets/images/heart_full.png');
         this.load.image('heart_empty', 'assets/images/heart_empty.png');
-        if (this.multiPlayer) { this.load.image('bee', 'assets/images/bee.png') };
+        //if (this.multiPlayer) { this.load.image('bee', 'assets/images/bee.png') };
+        if (this.multiPlayer) { this.load.atlas('bee', 'assets/images/bee.png', 'assets/images/bee.json') };
+
     }
 
     loadSounds() {
@@ -228,11 +238,11 @@ class Level1 extends Phaser.Scene {
     addActors() {
         // bee
         if (this.multiPlayer) {
-            this.addPlayer(115, 100, 'bee', 0.05, 0.4, 100);
+            this.addPlayer(115, 100, 'bee', 0.3, 0.4, 100);
         }
 
         // dragonFly
-        this.addPlayer(100, 100, 'dragonF_fly', 0.30, 0.4, 100);
+        this.addPlayer(100, 100, 'dragonF_fly', 0.3, 0.4, 100);
 
         // load life for actors
         this.loadLife();
@@ -263,6 +273,20 @@ class Level1 extends Phaser.Scene {
     }
 
     addAnimations() {
+        // bird
+        this.birdAnims = this.anims.create({
+            key: 'bird_fly',
+            frames: this.anims.generateFrameNames('bird', {
+                start: 1,
+                end: 10,
+                zeroPad: 2,
+                prefix: 'bb',
+                suffix: '.png'
+            }),
+            frameRate: 40,
+            repeat: -1
+        });
+
         //dragonFly
         this.anims.create({
             key: 'dragonF_fly',
@@ -278,19 +302,22 @@ class Level1 extends Phaser.Scene {
         });
         players['dragonF_fly'].obj.play('dragonF_fly');
 
-        // bird
-        this.birdAnims = this.anims.create({
-            key: 'bird_fly',
-            frames: this.anims.generateFrameNames('bird', {
-                start: 1,
-                end: 10,
-                zeroPad: 2,
-                prefix: 'bb',
-                suffix: '.png'
-            }),
-            frameRate: 40,
-            repeat: -1
-        });
+        // bee
+        if (this.multiPlayer) {
+            this.anims.create({
+                key: 'bee_fly',
+                frames: this.anims.generateFrameNames('bee', {
+                    start: 1,
+                    end: 6,
+                    zeroPad: 2,
+                    prefix: 'bee',
+                    suffix: '.png'
+                }),
+                frameRate: 10,
+                repeat: -1
+            });
+            players['bee'].obj.play('bee_fly');
+        }
     }
 
     update() {
