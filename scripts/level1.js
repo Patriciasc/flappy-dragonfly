@@ -22,7 +22,7 @@ class Level1 extends Phaser.Scene {
         this.birdAnims = null;
         this.timer = null;
         this.counter = "";
-        this.initialTime = 60000;
+        this.initialTime = 6000;
         this.lifeY = 30;
         this.speed = 100;
         this.gameFinished = false;
@@ -32,6 +32,7 @@ class Level1 extends Phaser.Scene {
     init(data) {
         // Check user selection for multiplayer.
         this.multiPlayer = data.multiPlayer;
+        if (this.mainTheme) this.mainTheme.stop();
     }
 
     preload() {
