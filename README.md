@@ -1,7 +1,12 @@
 # Flappy dragonFly!
 A game based on in Flappy Bird in Phaser 3.
 
-[Check the demo!](https://patriciasc.github.io/flappy-dragonfly/)
+[Check the MVP demo!](https://patriciasc.github.io/flappy-dragonfly/)
+
+## Demo Videos:
+* Flappy dragonfly 1 player: https://www.youtube.com/watch?v=5IaCzRNw9D0&list=PL3BapltKjMHroDd3KqGSkub5PAzEgKhi4&index=1
+* Flappy dragonFly 2 players: https://www.youtube.com/watch?v=PEHZhC9B4RQ&list=PL3BapltKjMHroDd3KqGSkub5PAzEgKhi4&index=2
+* Flappy dragonfly 1 player, 3 levels: https://www.youtube.com/watch?v=RkXF1wPx17E&list=PL3BapltKjMHroDd3KqGSkub5PAzEgKhi4&index=3
 
 ## Table of Contents
 * Game screenshots
